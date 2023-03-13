@@ -1,0 +1,20 @@
+pipeline:
+  run-python:
+    image: python:3.9
+    commands:
+      - python3 -m pip install requirements.txt
+      - python3 index.py
+
+  push-commit:
+    image: appleboy/drone-git-push  # See https://woodpecker-ci.org/plugins/Git%20Push
+    settings:
+      branch: ${CI_COMMIT_BRANCH}  # See https://woodpecker-ci.org/docs/usage/environment#built-in-environment-variables
+      commit: true
+      commit_message: "[skip ci] Python run commit ${CI_COMMIT_REF}"
+      remote: git@github.com:Denperidge-Redpencil/mu-python-template.git
+      ssh_key:
+          from_secret: private_deploy_key
+
+when:
+  path:
+    include: [".woodpecker*", "*.py"]
