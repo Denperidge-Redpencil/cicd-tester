@@ -34,7 +34,8 @@ def collect_woodpecker(source_dir: Path):
     
     makedirs(destination_dir, exist_ok=True)
 
-    files = glob(str(source_dir.joinpath("**/*woodpecker*.yml")), recursive=True)
+    files = glob(str(source_dir.joinpath("**/*.yml")), recursive=True)
+    files = [file for file in files if "woodpecker" in file.lower()]
 
     for file in files:
         new_filename = file.split("woodpecker/", 1)[1].replace("/", "-")
